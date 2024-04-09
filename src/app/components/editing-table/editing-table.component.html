@@ -6,6 +6,15 @@
       <td mat-cell *matCellDef="let row">{{ row.name }}</td>
     </ng-container>
 
+    <!-- <mat-form-field>
+      <input
+        matInput
+        placeholder="Name"
+        [value]="row.name"
+        [(ngModel)]="row.name"
+      />
+    </mat-form-field> -->
+
     <!-- Deadline Column -->
     <ng-container matColumnDef="deadline">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Дедлайн</th>
