@@ -1,0 +1,29 @@
+<header>
+  <mat-toolbar>
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </mat-toolbar>        
+</header>
+<mat-sidenav-container class="main-layout__container">
+  <mat-sidenav #sidenav mode="side" [(opened)]="opened">
+    <mat-list>
+      <mat-list-item>
+        <a [routerLink]="['/']">
+          <p>Главная</p>
+        </a></mat-list-item
+      >
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <a [routerLink]="['/']">
+          <p>Задачи</p>
+        </a></mat-list-item
+      >
+      <mat-divider></mat-divider>
+    </mat-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

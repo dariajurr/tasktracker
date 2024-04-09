@@ -1,0 +1,16 @@
+.main-layout {
+    &__container {
+        position: absolute;
+        top: 64px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+}
+
+mat-sidenav.mat-drawer-opened {
+    width: 240px;
+    min-width: 240px;
+    max-width: 240px;
+}
+
