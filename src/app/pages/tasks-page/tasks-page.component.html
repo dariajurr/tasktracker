@@ -1,6 +1,11 @@
 <main>
-    <h1>Список текущих</h1>
+    <div class="task-page__header">
+        <h1>Список текущих</h1>
+        <button mat-raised-button [routerLink]="['/', 'task', 0]">
+            Добавить задачу
+        </button>
+    </div>
     <div>
-        <app-editing-table></app-editing-table>
+        <app-tasks-table></app-tasks-table>
     </div>
 </main>

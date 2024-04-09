@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
 
 export interface TaskTableItem {
+  id: number;
   name: string;
   deadline: Date;
   priority: string;
@@ -13,10 +14,10 @@ export interface TaskTableItem {
 }
 
 const EXAMPLE_DATA: TaskTableItem[] = [
-  { name: 'Hydrogen', deadline: new Date(), priority: 'тест', status: "тест", performer: 'тест' },
+  { id: 1,name: 'Hydrogen', deadline: new Date(), priority: 'тест', status: "тест", performer: 'тест' },
 ];
 
-export class EditingTableDataSource extends DataSource<TaskTableItem> {
+export class TasksTableDataSource extends DataSource<TaskTableItem> {
   data: TaskTableItem[] = EXAMPLE_DATA;
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;

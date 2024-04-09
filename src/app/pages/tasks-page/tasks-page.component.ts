@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
-import { EditingTableComponent } from 'src/app/components/editing-table/editing-table.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterModule } from '@angular/router';
+import { TasksTableComponent } from 'src/app/components/tasks-table/tasks-table.component';
+
 
 @Component({
   selector: 'app-tasks-page',
   standalone: true,
-  imports: [EditingTableComponent],
+  imports: [RouterModule, MatIconModule, MatButtonModule, TasksTableComponent],
   templateUrl: './tasks-page.component.html',
   styleUrl: './tasks-page.component.scss'
 })

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { TasksPageComponent } from './pages/tasks-page/tasks-page.component';
 import { MainPageComponent } from './pages/main-page/main-page.component';
+import { TaskDetailPageComponent } from './pages/task-detail-page/task-detail-page.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
       {
         path: 'tasks',
         component: TasksPageComponent
+      },
+      {
+        path: 'task/:id',
+        component: TaskDetailPageComponent
       }
     ]
   },

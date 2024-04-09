@@ -2,17 +2,20 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { EditingTableDataSource, TaskTableItem } from './editing-table-datasource';
+import { TasksTableDataSource, TaskTableItem } from './tasks-table-datasource';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
+import { RouterModule } from '@angular/router';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @Component({
   standalone: true,
-  imports: [    
+  imports: [
+    RouterModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
@@ -21,17 +24,18 @@ import {MatInputModule} from '@angular/material/input';
     MatFormFieldModule,
     FormsModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatExpansionModule
   ],
-  selector: 'app-editing-table',
-  templateUrl: './editing-table.component.html',
-  styleUrl: './editing-table.component.scss'
+  selector: 'app-tasks-table',
+  templateUrl: './tasks-table.component.html',
+  styleUrl: './tasks-table.component.scss'
 })
-export class EditingTableComponent implements AfterViewInit {
+export class TasksTableComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<TaskTableItem>;
-  dataSource = new EditingTableDataSource();
+  dataSource = new TasksTableDataSource();
 
   displayedColumns = [
     'name',
@@ -40,6 +44,8 @@ export class EditingTableComponent implements AfterViewInit {
     'status',
     'performer'
   ];
+
+  panelOpenState = false;
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;

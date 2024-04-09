@@ -1,0 +1,12 @@
+<main>
+  <div class="task-deatail__header">
+    <button mat-icon-button [routerLink]="['/', 'tasks']">
+      <mat-icon>arrow_left</mat-icon>
+    </button>
+    <h1 class="task-deatail__title">
+      @if (id) { Задача №{{ id }}
+      } @else { Новая задача }
+    </h1>
+  </div>
+  <app-task-form [editMode]="!id"></app-task-form>
+</main>
