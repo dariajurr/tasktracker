@@ -19,6 +19,9 @@ import {
 } from 'src/core/interfaces/priority.interface';
 import { STATUSES, StatusType } from 'src/core/interfaces/status.interface';
 import { TaskFormItem } from 'src/core/interfaces/task.interface';
+import { TaskService } from 'src/core/services/task.service';
+import { createTaskBodyDTO } from 'src/core/dto/create-task.transformer';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-task-form',
@@ -57,13 +60,27 @@ export class TaskFormComponent implements OnInit {
   statuses = STATUSES;
   priorities = PRIORITIES;
 
-  constructor(private fb: NonNullableFormBuilder) {}
+  constructor(
+    private fb: NonNullableFormBuilder,
+    private taskService: TaskService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     if (!this.editMode) this.taskForm.disable();
   }
 
   onSubmit(): void {
-    console.log(this.taskForm.value);
+    this.taskService
+      .createTask(createTaskBodyDTO(this.taskForm.controls))
+      .subscribe({
+        next: (res) => {
+          this.taskForm.reset();
+          this.router.navigate(['/', 'tasks']);
+        },
+        error: (err) => {
+          console.error(err);
+        },
+      });
   }
 }

@@ -9,7 +9,7 @@ export interface TaskItem {
   deadline: Date;
   priority: PriorityType;
   status: StatusType;
-  performer: number;
+  performer: number | null;
 }
 
 export interface TaskFormItem {

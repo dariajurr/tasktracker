@@ -57,7 +57,7 @@ export class TasksTableDataSource extends DataSource<TaskItem> {
         // case 'deadline': return compare(a.deadline, b.deadline, isAsc);
         case 'priority': return compare(a.priority, b.priority, isAsc);
         case 'status': return compare(a.status, b.status, isAsc);
-        case 'performer': return compare(a.performer, b.performer, isAsc);
+        // case 'performer': return compare(a.performer, b.performer, isAsc);
         // case 'id': return compare(+a.id, +b.id, isAsc);
         default: return 0;
       }
