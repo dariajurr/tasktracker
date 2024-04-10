@@ -2,19 +2,28 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BASE_URL } from '../api.const';
 import { TaskItem } from '../interfaces/task.interface';
+import { BehaviorSubject, filter, Observable, tap } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TaskService {
-  constructor(private http: HttpClient) { }
+  private _tasks$ = new BehaviorSubject<TaskItem[]>([]);
 
-  getTasks() {
-    return this.http.get<TaskItem[]>(BASE_URL);
+  get tasks$() {
+    return this._tasks$.asObservable().pipe(filter(res => !!res));
+  }
+
+  constructor(private http: HttpClient) {}
+
+  getTasks(): Observable<TaskItem[]> {
+    return this.http
+      .get<TaskItem[]>(BASE_URL)
+      .pipe(tap((res) => this._tasks$.next(res)))
   }
 
   createTask(task: TaskItem) {
-    return this.http.post<any[]>(`${BASE_URL}/tasks`, task);
+    return this.http.post<TaskItem[]>(`${BASE_URL}/tasks`, task);
   }
 
   updateTask(task: Partial<TaskItem>) {
