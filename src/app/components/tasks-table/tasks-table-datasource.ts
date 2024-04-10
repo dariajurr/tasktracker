@@ -3,22 +3,18 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
+import { TaskItem } from 'src/core/interfaces/task.interface';
+import { PriorityType } from 'src/core/interfaces/priority.interface';
+import { StatusType } from 'src/core/interfaces/status.interface';
 
-export interface TaskTableItem {
-  id: number;
-  name: string;
-  deadline: Date;
-  priority: string;
-  status: string;
-  performer: string;
-}
 
-const EXAMPLE_DATA: TaskTableItem[] = [
-  { id: 1,name: 'Hydrogen', deadline: new Date(), priority: 'тест', status: "тест", performer: 'тест' },
+
+const EXAMPLE_DATA: TaskItem[] = [
+  { id: 1, title: 'Hydrogen', description: '', deadline: new Date(), priority: PriorityType.LOW, status: StatusType.CREATE, performer: 0 },
 ];
 
-export class TasksTableDataSource extends DataSource<TaskTableItem> {
-  data: TaskTableItem[] = EXAMPLE_DATA;
+export class TasksTableDataSource extends DataSource<TaskItem> {
+  data: TaskItem[] = EXAMPLE_DATA;
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
 
@@ -26,7 +22,7 @@ export class TasksTableDataSource extends DataSource<TaskTableItem> {
     super();
   }
 
-  connect(): Observable<TaskTableItem[]> {
+  connect(): Observable<TaskItem[]> {
     if (this.paginator && this.sort) {
       return merge(observableOf(this.data), this.paginator.page, this.sort.sortChange)
         .pipe(map(() => {
@@ -39,7 +35,7 @@ export class TasksTableDataSource extends DataSource<TaskTableItem> {
 
   disconnect(): void {}
 
-  private getPagedData(data: TaskTableItem[]): TaskTableItem[] {
+  private getPagedData(data: TaskItem[]): TaskItem[] {
     if (this.paginator) {
       const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
       return data.splice(startIndex, this.paginator.pageSize);
@@ -49,7 +45,7 @@ export class TasksTableDataSource extends DataSource<TaskTableItem> {
   }
 
 
-  private getSortedData(data: TaskTableItem[]): TaskTableItem[] {
+  private getSortedData(data: TaskItem[]): TaskItem[] {
     if (!this.sort || !this.sort.active || this.sort.direction === '') {
       return data;
     }
@@ -57,11 +53,11 @@ export class TasksTableDataSource extends DataSource<TaskTableItem> {
     return data.sort((a, b) => {
       const isAsc = this.sort?.direction === 'asc';
       switch (this.sort?.active) {
-        case 'name': return compare(a.name, b.name, isAsc);
-        case 'deadline': return compare(a.name, b.name, isAsc);
-        case 'priority': return compare(a.name, b.name, isAsc);
-        case 'status': return compare(a.name, b.name, isAsc);
-        case 'performer': return compare(a.name, b.name, isAsc);
+        case 'name': return compare(a.title, b.title, isAsc);
+        // case 'deadline': return compare(a.deadline, b.deadline, isAsc);
+        case 'priority': return compare(a.priority, b.priority, isAsc);
+        case 'status': return compare(a.status, b.status, isAsc);
+        case 'performer': return compare(a.performer, b.performer, isAsc);
         // case 'id': return compare(+a.id, +b.id, isAsc);
         default: return 0;
       }
