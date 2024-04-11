@@ -8,5 +8,9 @@
       } @else { Новая задача }
     </h1>
   </div>
-  <app-task-form [editMode]="!id"></app-task-form>
+  @if (!id || data) {
+    <app-task-form [editMode]="!id" [taskData]="data"></app-task-form>
+  } @else {
+    <mat-spinner></mat-spinner>
+  }
 </main>

@@ -21,6 +21,10 @@ const routes: Routes = [
       {
         path: 'task/:id',
         component: TaskDetailPageComponent
+      },
+      {
+        path: 'task/new',
+        component: TaskDetailPageComponent
       }
     ]
   },

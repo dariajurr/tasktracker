@@ -18,7 +18,7 @@ import {
   PriorityType,
 } from 'src/core/interfaces/priority.interface';
 import { STATUSES, StatusType } from 'src/core/interfaces/status.interface';
-import { TaskFormItem } from 'src/core/interfaces/task.interface';
+import { TaskFormItem, TaskItem } from 'src/core/interfaces/task.interface';
 import { TaskService } from 'src/core/services/task.service';
 import { createTaskBodyDTO } from 'src/core/dto/create-task.transformer';
 import { Router } from '@angular/router';
@@ -47,6 +47,9 @@ import { Router } from '@angular/router';
 })
 export class TaskFormComponent implements OnInit {
   @Input() editMode: boolean = false;
+  @Input() taskData: TaskItem | null = null;
+
+  updateMode: boolean = false;
 
   taskForm = this.fb.group<TaskFormItem>({
     title: this.fb.control<string>('', [Validators.required]),
@@ -68,13 +71,20 @@ export class TaskFormComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.editMode) this.taskForm.disable();
+    if (this.taskData) this.taskForm.patchValue(this.taskData);
+  }
+
+  editTask() {
+    this.updateMode = true;
+    this.taskForm.controls.status.enable();
+    this.taskForm.controls.performer.enable();
   }
 
   onSubmit(): void {
     this.taskService
       .createTask(createTaskBodyDTO(this.taskForm.controls))
       .subscribe({
-        next: (res) => {
+        next: () => {
           this.taskForm.reset();
           this.router.navigate(['/', 'tasks']);
         },

@@ -18,15 +18,38 @@ export class InMemoryStorageService implements InMemoryDbService {
 
   get(reqInfo: RequestInfo): Observable<Response> {
     if (reqInfo.collectionName === 'tasks') {
-      const tasks = localStorage.getItem('tasks');
-      if (tasks) {
-        const items = JSON.parse(tasks);
-        return reqInfo.utils.createResponse$(() => {
-          return {
-            body: items,
-            status: 200
+      if (!!reqInfo.id) {
+        const tasks = localStorage.getItem('tasks');
+        if (tasks) {
+          const items: TaskItem[] = JSON.parse(tasks);
+          const task = items.find((item) => item.id === +reqInfo.id);
+          if (task) {
+            return reqInfo.utils.createResponse$(() => {
+              return {
+                body: task,
+                status: 200
+              };
+            });
+          } else {
+            return reqInfo.utils.createResponse$(() => {
+              return {
+                status: 404,
+                body: `Task with id ${reqInfo.id} not found`,
+              };
+            });
           }
-        });
+        }
+      } else {
+        const tasks = localStorage.getItem('tasks');
+        if (tasks) {
+          const items = JSON.parse(tasks);
+          return reqInfo.utils.createResponse$(() => {
+            return {
+              body: items,
+              status: 200
+            };
+          });
+        }
       }
     }
     return reqInfo.utils.createResponse$(() => {

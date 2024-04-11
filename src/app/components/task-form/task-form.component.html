@@ -71,6 +71,7 @@
       </div>
     </mat-card-content>
     <mat-card-actions>
+      @if (editMode || updateMode) {
       <button
         mat-stroked-button
         color="primary"
@@ -80,6 +81,17 @@
       >
         Сохранить
       </button>
+      } @else {
+      <button
+        mat-stroked-button
+        color="primary"
+        class="send-btn"
+        (click)="editTask()"
+        [disabled]="taskForm.invalid"
+      >
+        Редактировать
+      </button>
+      }
     </mat-card-actions>
   </mat-card>
 </form>

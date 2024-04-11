@@ -22,12 +22,11 @@ export class TaskService {
       .pipe(tap((res) => this._tasks$.next(res)))
   }
 
-  createTask(task: TaskItem) {
-    return this.http.post<TaskItem[]>(`${BASE_URL}/tasks`, task);
+  getTaskById(id: number): Observable<TaskItem> {
+    return this.http.get<TaskItem>(BASE_URL + id);
   }
 
-  updateTask(task: Partial<TaskItem>) {
-    console.log('task: ', task);
-    return this.http.patch<TaskItem[]>(BASE_URL, task);
+  createTask(task: TaskItem) {
+    return this.http.post<TaskItem[]>(`${BASE_URL}`, task);
   }
 }
