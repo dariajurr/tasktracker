@@ -3,19 +3,29 @@
     <button mat-icon-button (click)="sidenav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
-  </mat-toolbar>        
+  </mat-toolbar>
 </header>
 <mat-sidenav-container class="main-layout__container">
   <mat-sidenav #sidenav mode="side" [(opened)]="opened">
     <mat-list>
       <mat-list-item>
-        <a [routerLink]="['/']">
+        <a
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-link"
+          [routerLink]="['/']"
+        >
           <p>Главная</p>
         </a></mat-list-item
       >
       <mat-divider></mat-divider>
       <mat-list-item>
-        <a [routerLink]="['/', 'tasks']">
+        <a
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-link"
+          [routerLink]="['/', 'tasks']"
+        >
           <p>Задачи</p>
         </a></mat-list-item
       >

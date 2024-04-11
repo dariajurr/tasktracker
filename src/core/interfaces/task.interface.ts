@@ -1,6 +1,6 @@
-import { FormControl } from "@angular/forms";
-import { PriorityType } from "./priority.interface";
-import { StatusType } from "./status.interface";
+import { FormControl } from '@angular/forms';
+import { PriorityType } from './priority.interface';
+import { StatusType } from './status.interface';
 
 export interface TaskItem {
   id: number;
@@ -9,7 +9,7 @@ export interface TaskItem {
   deadline: Date;
   priority: PriorityType;
   status: StatusType;
-  performer: number | null;
+  performer: string;
 }
 
 export interface TaskFormItem {
@@ -18,5 +18,13 @@ export interface TaskFormItem {
   deadline: FormControl<Date>;
   priority: FormControl<PriorityType | null>;
   status: FormControl<StatusType | null>;
-  performer: FormControl<number | null>;
+  performer: FormControl<string>;
+}
+
+export interface TaskFilter extends Pick<TaskItem, 'status' | 'performer'> {}
+
+export interface TaskTableFilter {
+  name: string;
+  options: string[];
+  defaultValue: string;
 }

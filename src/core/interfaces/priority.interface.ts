@@ -22,6 +22,7 @@ export const PRIORITIES = [
   { value: PriorityType.LOW, name: PriorityTypeName.LOW },
 ];
 
-
-
-
+export interface PriorityWithNames {
+  value: PriorityType;
+  name: PriorityTypeName;
+}

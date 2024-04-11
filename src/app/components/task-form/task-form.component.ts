@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import {
+  FormGroup,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
@@ -16,12 +17,14 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import {
   PRIORITIES,
   PriorityType,
+  PriorityWithNames,
 } from 'src/core/interfaces/priority.interface';
-import { STATUSES, StatusType } from 'src/core/interfaces/status.interface';
+import { STATUSES, StatusesWithNames, StatusType } from 'src/core/interfaces/status.interface';
 import { TaskFormItem, TaskItem } from 'src/core/interfaces/task.interface';
 import { TaskService } from 'src/core/services/task.service';
 import { createTaskBodyDTO } from 'src/core/dto/create-task.transformer';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-task-form',
@@ -46,51 +49,76 @@ import { Router } from '@angular/router';
   styleUrl: './task-form.component.scss',
 })
 export class TaskFormComponent implements OnInit {
-  @Input() editMode: boolean = false;
+  @Input() id: number | undefined
   @Input() taskData: TaskItem | null = null;
 
   updateMode: boolean = false;
+  editMode: boolean = false;
 
-  taskForm = this.fb.group<TaskFormItem>({
-    title: this.fb.control<string>('', [Validators.required]),
-    description: this.fb.control<string>('', [Validators.required]),
-    deadline: this.fb.control<Date>(new Date(), [Validators.required]),
-    priority: this.fb.control<PriorityType | null>(null, [Validators.required]),
-    status: this.fb.control<StatusType | null>(null, [Validators.required]),
-    performer: this.fb.control<number | null>(null, [Validators.required]),
+  taskForm: FormGroup<TaskFormItem> = this._fb.group<TaskFormItem>({
+    title: this._fb.control<string>('', [Validators.required]),
+    description: this._fb.control<string>('', [Validators.required]),
+    deadline: this._fb.control<Date>(new Date(), [Validators.required]),
+    priority: this._fb.control<PriorityType | null>(null, [Validators.required]),
+    status: this._fb.control<StatusType | null>(null, [Validators.required]),
+    performer: this._fb.control<string>('', [Validators.required]),
   });
 
-  statuses = STATUSES;
-  priorities = PRIORITIES;
+  statuses: StatusesWithNames[] = STATUSES;
+  priorities: PriorityWithNames[] = PRIORITIES;
 
   constructor(
-    private fb: NonNullableFormBuilder,
-    private taskService: TaskService,
-    private router: Router
+    private _fb: NonNullableFormBuilder,
+    private _taskService: TaskService,
+    private _router: Router
   ) {}
 
   ngOnInit(): void {
+    if(!this.id) this.editMode = true;
     if (!this.editMode) this.taskForm.disable();
     if (this.taskData) this.taskForm.patchValue(this.taskData);
   }
 
-  editTask() {
+  editTask(): void {
     this.updateMode = true;
     this.taskForm.controls.status.enable();
     this.taskForm.controls.performer.enable();
   }
 
   onSubmit(): void {
-    this.taskService
-      .createTask(createTaskBodyDTO(this.taskForm.controls))
-      .subscribe({
+    if (this.updateMode) {
+
+    }
+    this._getFormAction
+    if (this.updateMode) {
+      this._taskService.updateTask(createTaskBodyDTO(this.taskForm.controls, this.id)).subscribe({
         next: () => {
           this.taskForm.reset();
-          this.router.navigate(['/', 'tasks']);
+          this._router.navigate(['/', 'tasks']);
         },
         error: (err) => {
           console.error(err);
         },
       });
+    } else {
+      this._taskService.createTask(createTaskBodyDTO(this.taskForm.controls)).subscribe({
+        next: () => {
+          this.taskForm.reset();
+          this._router.navigate(['/', 'tasks']);
+        },
+        error: (err) => {
+          console.error(err);
+        },
+      });
+    }
+      
+  }
+
+  private _getFormAction(): Observable<TaskItem[]> {
+    if (this.updateMode) {
+      return this._taskService.createTask(createTaskBodyDTO(this.taskForm.controls))
+    } else {
+      return this._taskService.updateTask(createTaskBodyDTO(this.taskForm.controls))
+    }
   }
 }

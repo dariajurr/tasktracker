@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { InMemoryDbService, RequestInfo, ResponseOptions } from 'angular-in-memory-web-api';
+import {
+  InMemoryDbService,
+  RequestInfo,
+  ResponseOptions,
+} from 'angular-in-memory-web-api';
 import { Observable } from 'rxjs';
 import { TaskItem } from '../interfaces/task.interface';
 
@@ -7,13 +11,13 @@ import { TaskItem } from '../interfaces/task.interface';
 export class InMemoryStorageService implements InMemoryDbService {
   createDb() {
     const data = {
-      tasks: []
+      tasks: [],
     };
     return data;
   }
 
   genId(tasks: TaskItem[]): number {
-    return tasks.length > 0 ? Math.max(...tasks.map(task => task.id)) + 1 : 1;
+    return tasks.length > 0 ? Math.max(...tasks.map((task) => task.id)) + 1 : 1;
   }
 
   get(reqInfo: RequestInfo): Observable<Response> {
@@ -27,7 +31,7 @@ export class InMemoryStorageService implements InMemoryDbService {
             return reqInfo.utils.createResponse$(() => {
               return {
                 body: task,
-                status: 200
+                status: 200,
               };
             });
           } else {
@@ -46,7 +50,7 @@ export class InMemoryStorageService implements InMemoryDbService {
           return reqInfo.utils.createResponse$(() => {
             return {
               body: items,
-              status: 200
+              status: 200,
             };
           });
         }
@@ -65,7 +69,7 @@ export class InMemoryStorageService implements InMemoryDbService {
       const body = reqInfo.utils.getJsonBody(reqInfo.req);
       let tasks = localStorage.getItem('tasks');
       let items = tasks ? JSON.parse(tasks) : [];
-      items.push({...body, id: this.genId(items)});
+      items.push({ ...body, id: this.genId(items) });
       localStorage.setItem('tasks', JSON.stringify(items));
       return reqInfo.utils.createResponse$(() => {
         return {
@@ -81,18 +85,21 @@ export class InMemoryStorageService implements InMemoryDbService {
       };
     });
   }
-  
+
   patch(reqInfo: RequestInfo): Observable<Response> {
     if (reqInfo.collectionName === 'tasks') {
       const item = reqInfo.utils.getJsonBody(reqInfo.req);
-      const collection = reqInfo.collection as any[];
-      const index = collection.findIndex((existingItem: any) => existingItem.id === item.id);
+      let tasks = localStorage.getItem('tasks');
+      let items = tasks ? JSON.parse(tasks) : [];
+      const index = items.findIndex(
+        (existingItem: TaskItem) => existingItem.id === item.id
+      );
       if (index >= 0) {
-        const updatedItem = { ...collection[index], ...item };
-        collection[index] = updatedItem;
+        Object.assign(items[index], item);
+        localStorage.setItem('tasks', JSON.stringify(items));
         return reqInfo.utils.createResponse$(() => {
           return {
-            updatedItem,
+            updatedItem: items[index],
             status: 200,
           };
         });

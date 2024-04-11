@@ -1,7 +1,7 @@
 export enum StatusType {
   CREATE = 'CREATE',
   IN_PROGRESS = 'IN_PROGRESS',
-  COMPLETED = 'COMPLETED'
+  COMPLETED = 'COMPLETED',
 }
 
 export enum StatusTypeName {
@@ -22,3 +22,7 @@ export const STATUSES = [
   { value: StatusType.COMPLETED, name: StatusTypeName.COMPLETED },
 ];
 
+export interface StatusesWithNames {
+  value: StatusType;
+  name: StatusTypeName;
+}

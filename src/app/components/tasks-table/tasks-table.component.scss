@@ -5,3 +5,10 @@
 tr.mat-mdc-row {
   cursor: pointer;
 }
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+}

@@ -53,44 +53,40 @@
             <mat-label>Статус</mat-label>
             <mat-select [formControl]="taskForm.controls.status">
               @for (state of statuses; track state) {
-              <mat-option [value]="state.value">{{ state.name }}</mat-option>
+                <mat-option [value]="state.value">{{ state.name }}</mat-option>
               }
             </mat-select>
           </mat-form-field>
         </div>
         <div class="col">
           <mat-form-field class="full-width">
-            <mat-label>Исполнители</mat-label>
-            <mat-select [formControl]="taskForm.controls.performer">
-              @for (state of statuses; track state) {
-              <mat-option [value]="state.value">{{ state.name }}</mat-option>
-              }
-            </mat-select>
+            <mat-label>Исполнитель</mat-label>
+            <input matInput [formControl]="taskForm.controls.performer" />
           </mat-form-field>
         </div>
       </div>
     </mat-card-content>
     <mat-card-actions>
       @if (editMode || updateMode) {
-      <button
-        mat-stroked-button
-        color="primary"
-        class="send-btn"
-        type="submit"
-        [disabled]="taskForm.invalid"
-      >
-        Сохранить
-      </button>
+        <button
+          mat-stroked-button
+          color="primary"
+          class="send-btn"
+          type="submit"
+          [disabled]="taskForm.invalid"
+        >
+          Сохранить
+        </button>
       } @else {
-      <button
-        mat-stroked-button
-        color="primary"
-        class="send-btn"
-        (click)="editTask()"
-        [disabled]="taskForm.invalid"
-      >
-        Редактировать
-      </button>
+        <button
+          mat-stroked-button
+          color="primary"
+          class="send-btn"
+          (click)="editTask()"
+          [disabled]="taskForm.invalid"
+        >
+          Редактировать
+        </button>
       }
     </mat-card-actions>
   </mat-card>

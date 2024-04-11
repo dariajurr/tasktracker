@@ -17,3 +17,12 @@ mat-sidenav.mat-drawer-opened {
 mat-sidenav-content {
     padding: 20px;
 }
+
+.nav-link {
+    color: unset;
+    text-decoration: none;
+}
+
+.active-link {
+    color: var(--mat-stepper-header-selected-state-icon-background-color);
+}

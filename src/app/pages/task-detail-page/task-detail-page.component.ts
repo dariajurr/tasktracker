@@ -10,27 +10,34 @@ import { TaskService } from 'src/core/services/task.service';
 @Component({
   selector: 'app-task-detail-page',
   standalone: true,
-  imports: [RouterModule, MatIconModule, MatButtonModule, TaskFormComponent, MatProgressSpinnerModule ],
+  imports: [
+    RouterModule,
+    MatIconModule,
+    MatButtonModule,
+    TaskFormComponent,
+    MatProgressSpinnerModule,
+  ],
   templateUrl: './task-detail-page.component.html',
-  styleUrl: './task-detail-page.component.scss'
+  styleUrl: './task-detail-page.component.scss',
 })
-export class TaskDetailPageComponent implements OnInit{
+export class TaskDetailPageComponent implements OnInit {
   id?: number;
   data: TaskItem | null = null;
 
-  constructor(private activatedRoute: ActivatedRoute, private taskService: TaskService) {
-    this.activatedRoute.paramMap.subscribe(params => {
+  constructor(
+    private _activatedRoute: ActivatedRoute,
+    private _taskService: TaskService
+  ) {
+    this._activatedRoute.paramMap.subscribe((params) => {
       this.id = Number(params.get('id'));
-      console.log(this.id);
     });
   }
 
   ngOnInit(): void {
     if (this.id) {
-      this.taskService.getTaskById(this.id).subscribe(taskData => {
+      this._taskService.getTaskById(this.id).subscribe((taskData) => {
         this.data = taskData || null;
-      })
+      });
     }
   }
-
 }

@@ -11,7 +11,7 @@ export class TaskService {
   private _tasks$ = new BehaviorSubject<TaskItem[]>([]);
 
   get tasks$() {
-    return this._tasks$.asObservable().pipe(filter(res => !!res));
+    return this._tasks$.asObservable().pipe(filter((res) => !!res));
   }
 
   constructor(private http: HttpClient) {}
@@ -19,7 +19,7 @@ export class TaskService {
   getTasks(): Observable<TaskItem[]> {
     return this.http
       .get<TaskItem[]>(BASE_URL)
-      .pipe(tap((res) => this._tasks$.next(res)))
+      .pipe(tap((res) => this._tasks$.next(res)));
   }
 
   getTaskById(id: number): Observable<TaskItem> {
@@ -27,6 +27,10 @@ export class TaskService {
   }
 
   createTask(task: TaskItem) {
-    return this.http.post<TaskItem[]>(`${BASE_URL}`, task);
+    return this.http.post<TaskItem[]>(BASE_URL, task);
+  }
+
+  updateTask(task: Partial<TaskItem>) {
+    return this.http.patch<TaskItem[]>(BASE_URL, task);
   }
 }

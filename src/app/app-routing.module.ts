@@ -12,26 +12,26 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: MainPageComponent
+        component: MainPageComponent,
       },
       {
         path: 'tasks',
-        component: TasksPageComponent
+        component: TasksPageComponent,
       },
       {
         path: 'task/:id',
-        component: TaskDetailPageComponent
+        component: TaskDetailPageComponent,
       },
       {
         path: 'task/new',
-        component: TaskDetailPageComponent
-      }
-    ]
+        component: TaskDetailPageComponent,
+      },
+    ],
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
