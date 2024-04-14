@@ -1,54 +1,56 @@
-@for (filter of taskTableFilters; track filter) {
-  <mat-form-field appearance="fill">
-    <mat-label>{{ filter.name | getDisplayColumnName }}</mat-label>
-    <mat-select
-      [(value)]="filter.defaultValue"
-      (selectionChange)="applyTasksFilter($event, filter)"
-    >
-      @for (op of filter.options; track $index) {
-        <mat-option [value]="op">
-          {{ op | getFilterDisplayName : filter }}
-        </mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
-}
-
-<mat-form-field>
-  <mat-label>Дедлайн</mat-label>
-  <input matInput [matDatepicker]="picker" (dateChange)="applyTasksFilter($event)">
-  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-  <mat-datepicker #picker></mat-datepicker>
-</mat-form-field>
-
-
-<table
-  mat-table
-  [dataSource]="dataSourceFilters"
-  class="mat-elevation-z8"
-  matSort
->
-  @for (column of displayedColumns; track column) {
-    <ng-container [matColumnDef]="column">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>
-        {{ column | getDisplayColumnName }}
-      </th>
-      <td mat-cell *matCellDef="let task">
-        {{ task[column] | getDisplayName : column }}
-      </td>
-    </ng-container>
+@if (tableData.length){
+  @for (filter of taskTableFilters; track filter) {
+    <mat-form-field appearance="fill">
+      <mat-label>{{ filter.name | getDisplayColumnName }}</mat-label>
+      <mat-select
+        [(value)]="filter.defaultValue"
+        (selectionChange)="applyTasksFilter($event, filter)"
+      >
+        @for (op of filter.options; track $index) {
+          <mat-option [value]="op">
+            {{ op | getFilterDisplayName : filter }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
   }
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr
-    mat-row
-    *matRowDef="let task; columns: displayedColumns"
-    [routerLink]="['/', 'task', task.id]"
-  ></tr>
-</table>
+  <mat-form-field>
+    <mat-label>Дедлайн</mat-label>
+    <input matInput [matDatepicker]="picker" (dateChange)="applyTasksFilter($event)">
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
 
-@if(!tableData.length&&!isLoading){
+
+  <table
+    mat-table
+    [dataSource]="dataSourceFilters"
+    class="mat-elevation-z8"
+    matSort
+  >
+    @for (column of displayedColumns; track column) {
+      <ng-container [matColumnDef]="column">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ column | getDisplayColumnName }}
+        </th>
+        <td mat-cell *matCellDef="let task">
+          {{ task[column] | getDisplayName : column }}
+        </td>
+      </ng-container>
+    }
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr
+      mat-row
+      *matRowDef="let task; columns: displayedColumns"
+      [routerLink]="['/', 'task', task.id]"
+    ></tr>
+  </table>
+} @else if(!tableData.length&&!isLoading){
   <p>Задач нет</p>
-} @if (isLoading) {
+} 
+
+@if (isLoading) {
   <div class="loader"><mat-spinner></mat-spinner></div>
 }
