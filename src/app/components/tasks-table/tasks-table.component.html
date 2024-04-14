@@ -14,6 +14,14 @@
   </mat-form-field>
 }
 
+<mat-form-field>
+  <mat-label>Дедлайн</mat-label>
+  <input matInput [matDatepicker]="picker" (dateChange)="applyTasksFilter($event)">
+  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+
+
 <table
   mat-table
   [dataSource]="dataSourceFilters"

@@ -58,7 +58,7 @@ export class TaskFormComponent implements OnInit {
   taskForm: FormGroup<TaskFormItem> = this._fb.group<TaskFormItem>({
     title: this._fb.control<string>('', [Validators.required]),
     description: this._fb.control<string>('', [Validators.required]),
-    deadline: this._fb.control<Date>(new Date(), [Validators.required]),
+    deadline: this._fb.control<Date>(new Date(new Date().setHours(0,0,0,0)), [Validators.required]),
     priority: this._fb.control<PriorityType | null>(null, [Validators.required]),
     status: this._fb.control<StatusType | null>(null, [Validators.required]),
     performer: this._fb.control<string>('', [Validators.required]),

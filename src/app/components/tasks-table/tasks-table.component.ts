@@ -18,6 +18,8 @@ import { MatCardModule } from '@angular/material/card';
 import { GetDisplayColumnNamePipe } from 'src/core/pipes/get-display-column-name.pipe';
 import { GetDisplayNamePipe } from 'src/core/pipes/get-display-name.pipe';
 import { GetFilterDisplayNamePipe } from 'src/core/pipes/get-filter-display-name.pipe';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatDatepickerInputEvent, MatDatepickerModule } from '@angular/material/datepicker';
 
 @Component({
   standalone: true,
@@ -32,9 +34,11 @@ import { GetFilterDisplayNamePipe } from 'src/core/pipes/get-filter-display-name
     GetDisplayNamePipe,
     GetDisplayColumnNamePipe,
     GetFilterDisplayNamePipe,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDatepickerModule
   ],
-  providers: [DatePipe],
+  providers: [DatePipe, provideNativeDateAdapter(),
+  ],
   selector: 'app-tasks-table',
   templateUrl: './tasks-table.component.html',
   styleUrl: './tasks-table.component.scss',
@@ -57,7 +61,6 @@ export class TasksTableComponent implements OnInit, AfterViewInit {
 
   private _status: string[] = [];
   private _performer: string[] = [];
-  private _deadline: string[] = [];
   private _defaultValue: string = 'All';
   private _filterDictionary: Map<string, string> = new Map<string, string>();
   private _dataSource: MatTableDataSource<TaskItem> = new MatTableDataSource(this.tableData);
@@ -73,9 +76,13 @@ export class TasksTableComponent implements OnInit, AfterViewInit {
     this._dataSource.sort = this.sort;
   }
 
-  applyTasksFilter(ob: MatSelectChange, tasksfilter: TaskTableFilter) {
-    this._filterDictionary.set(tasksfilter.name, ob.value);
 
+  applyTasksFilter(ob: MatSelectChange | MatDatepickerInputEvent<Date>, tasksfilter?: TaskTableFilter) {
+    if (tasksfilter) {
+      this._filterDictionary.set(tasksfilter.name, ob.value);
+    } else {
+      this._filterDictionary.set('deadline', ob.value.toISOString());
+    }
     this.dataSourceFilters.filter = JSON.stringify(
       Array.from(this._filterDictionary.entries())
     );
@@ -96,12 +103,6 @@ export class TasksTableComponent implements OnInit, AfterViewInit {
 
   private _setFiltersValue(): void {
     this.taskTableFilters.push({
-      name: 'deadline',
-      options: this._deadline,
-      defaultValue: this._defaultValue,
-    });
-
-    this.taskTableFilters.push({
       name: 'status',
       options: this._status,
       defaultValue: this._defaultValue,
@@ -117,7 +118,6 @@ export class TasksTableComponent implements OnInit, AfterViewInit {
   private _setFilters(): void {
     this._setFiltersValue();
     this.dataSourceFilters.filterPredicate = function (record, filter) {
-      debugger;
       const map = new Map(JSON.parse(filter));
       let isMatch = false;
       for (let [key, value] of map) {
@@ -135,7 +135,6 @@ export class TasksTableComponent implements OnInit, AfterViewInit {
       tap((res) => {
         this._status = this._getFilterValue(res, 'status');
         this._performer = this._getFilterValue(res, 'performer');
-        this._deadline = this._getFilterValue(res, 'deadline');
       }),
       finalize(() => (this.isLoading = false))
     )
