@@ -19,7 +19,7 @@ export class GetFilterDisplayNamePipe implements PipeTransform {
       case DisplayedColumnsType.STATUS:
         return STATUS_TYPE_NAME[value as StatusType];
       case DisplayedColumnsType.DEADLINE:
-        return this.date.transform(value, 'HH:mm dd.MM.yyyy');
+        return this.date.transform(value, 'dd.MM.yyyy');
       default:
         return value;
     }

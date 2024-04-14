@@ -21,7 +21,7 @@ export class GetDisplayNamePipe implements PipeTransform {
   transform(value: string, columnName: string): string | null {
     switch (columnName) {
       case DisplayedColumnsType.DEADLINE:
-        return this.date.transform(value, 'HH:mm dd.MM.yyyy');
+        return this.date.transform(value, 'dd.MM.yyyy');
       case DisplayedColumnsType.PRIORITY:
         return PRIORITY_TYPE_NAME[value as PriorityType];
       case DisplayedColumnsType.STATUS:
