@@ -5,7 +5,7 @@
 - Angular Material
 - Angular In-memory Web API
 
-![image](https://github.com/dariajurr/tasktracker/assets/63465787/a1738d92-2418-45bf-b9d4-fdc756a187d1)
+[Посмотреть тут](https://dariajurr.github.io/tasktracker/)
 
 ## Задачи:
 В приложении должен быть реализован функционал:
